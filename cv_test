@@ -29,7 +29,7 @@ picam.capture_file("test-python.jpg")
 picam.close()
 
 #reading image
-img = cv.imread("IMG_7194.jpg")
+img = cv.imread("test-python.jpg")
 # if img is None:
 #     print('Could not open or find the image:', args.input)
 #     exit(0)
