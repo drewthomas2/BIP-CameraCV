@@ -68,9 +68,9 @@ h, s, v = cv.split(hsv)
 m_h = np.apply_along_axis(lambda x: np.bincount(x).argmax(), axis=0, arr=h)
 m_s = np.apply_along_axis(lambda x: np.bincount(x).argmax(), axis=0, arr=s)
 m_v = np.apply_along_axis(lambda x: np.bincount(x).argmax(), axis=0, arr=v)
-mode_h = m_h[0][0]
-mode_s = m_s[0][0]
-mode_v = m_v[0][0]
+mode_h = m_h[0]
+mode_s = m_s[0]
+mode_v = m_v[0]
 print('h: ' + str(mode_h) + '  s: ' + str(mode_s) + '  v: ' + str(mode_v))
 
 
