@@ -8,8 +8,7 @@ import cv2 as cv
 import sys
 import argparse
 import colorsys
-# from matplotlib.colors import hsv_to_rgb
-from scipy import stats
+# from scipy import stats
 
 
 import time
@@ -30,9 +29,9 @@ picam.close()
 
 #reading image
 img = cv.imread("test-python.jpg")
-# if img is None:
-#     print('Could not open or find the image:', args.input)
-#     exit(0)
+if img is None:
+    print('Could not open or find the image:', args.input)
+    exit(0)
 
 # REDUCING IMAGE RESOLUTION 
 redu_factor = 0.1
@@ -42,11 +41,7 @@ print('height: ' + str(height) + ' width: ' + str(width))
 
 # CONVERT TO HSV
 hsv = cv.cvtColor(new_img, cv.COLOR_BGR2HSV)
-
-# CREATING HISTOGRAM
-# histSize = 180
-# histRange = (0, 180) # the upper boundary is exclusive
-# accumulate = False
+h, s, v = cv.split(hsv)
 h, s, v = cv.split(hsv)
 # b_hist = cv.calcHist(h, [0], None, [histSize], histRange, accumulate=accumulate)
 # hist_w = 540
@@ -56,40 +51,26 @@ h, s, v = cv.split(hsv)
 # cv.normalize(b_hist, b_hist, alpha=0, beta=hist_h, norm_type=cv.NORM_MINMAX)
 # for i in range(1, histSize):
 #     cv.line(histImage, ( bin_w*(i-1), hist_h - int(b_hist[i-1]) ), ( bin_w*(i), hist_h - int(b_hist[i]) ), ( 179, 0, 0), thickness=2)
-    
+h, s, v = cv.split(hsv)  
+# b_hist = cv.calcHist(h, [0], None, [histSize], histRange, accumulate=accumulate)
+# hist_w = 540
+# hist_h = 400
+# bin_w = int(round( hist_w/histSize ))
+# histImage = np.zeros((hist_h, hist_w, 3), dtype=np.uint8)
+# cv.normalize(b_hist, b_hist, alpha=0, beta=hist_h, norm_type=cv.NORM_MINMAX)
+# for i in range(1, histSize):
+#     cv.line(histImage, ( bin_w*(i-1), hist_h - int(b_hist[i-1]) ), ( bin_w*(i), hist_h - int(b_hist[i]) ), ( 179, 0, 0), thickness=2)
 
-m_h = stats.mode(h)
-m_s = stats.mode(s)
-m_v = stats.mode(v)
+# m_h = stats.mode(h)
+# m_s = stats.mode(s)
+# m_v = stats.mode(v)
+
+m_h = np.apply_along_axis(lambda x: np.bincount(x).argmax(), axis=0, arr=h)
+m_s = np.apply_along_axis(lambda x: np.bincount(x).argmax(), axis=0, arr=s)
+m_v = np.apply_along_axis(lambda x: np.bincount(x).argmax(), axis=0, arr=v)
 mode_h = m_h[0][0]
 mode_s = m_s[0][0]
 mode_v = m_v[0][0]
 print('h: ' + str(mode_h) + '  s: ' + str(mode_s) + '  v: ' + str(mode_v))
 
-# mode_h = mode_h / 180
-# mode_s = mode_s / 255
-# mode_v = mode_v / 100
-# # hsv_list = [mode_h, mode_s, mode_v]
-# hsv_list = [mode_h, 1, 1]
-# rgb_list = 255*hsv_to_rgb(hsv_list)
-# # print(rgb_list*255)
-# print([int(rgb_list[0]), int(rgb_list[1]), int(rgb_list[2])])
 
-# result = np.zeros((hist_h, hist_w, 3), dtype=np.uint8)
-# cv.cvSet(result, cv.CV_BGR(rgb_list[0], rgb_list[1], rgb_list[2]))
-# result = cv.Scalar(rgb_list[0], rgb_list[1], rgb_list[2])
-
-# def create_blank(width, height, rgb_color=(0, 0, 0)):
-#     image = np.zeros((height, width, 3), np.uint8)
-#     color = tuple(reversed(rgb_color))
-#     image[:] = color
-#     return image
-
-# result = create_blank(500, 500, rgb_color=(int(rgb_list[0]), int(rgb_list[1]), int(rgb_list[2])))
-# result = create_blank(500, 500, rgb_color=(int(rgb_list[0]), int(rgb_list[1]), int(rgb_list[2])))
-
-
-# cv.imshow("Image", new_img)
-# cv.imshow('Hue Histogram', histImage)
-# cv.imshow("result", result)
-# cv.waitKey() # Wait for a keystroke in the window
