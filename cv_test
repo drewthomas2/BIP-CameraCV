@@ -13,14 +13,16 @@ from picamera2 import Picamera2
 from picamera.array import PiRGBArray
 
 picam = Picamera2()
+# config = picam.create_still_configuration(main={"size": (640, 480)})
+# picam.configure(config)
 rawCapture = PiRGBArray(picam)
 
 picam.start()
-time.sleep(0.3)
-picam.capture(rawCapture, format='bgr')
+time.sleep(1)
+img = picam2.capture_array("main")
 
 picam.close()
-img = rawCapture.array
+
 #reading image
 # img = cv.imread("test-python.jpg")
 # if img is None:
