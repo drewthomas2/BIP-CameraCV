@@ -10,9 +10,10 @@ from picamera2 import Picamera2
 from picamera.array import PiRGBArray
 import smbus
 
-address = 0x60 # change
-reg_write_dac = 0x40
-bus = smbus.SMBus(1))
+FULL = 0x7FFFFFFF
+ADDRESS = 0x60 # change
+REG_WRITE = 0x40
+bus = smbus.SMBus(1)
 
 n = 0 # count
 p = 1 # times run
@@ -48,5 +49,5 @@ while n<1:
     log.write(s)
     log.close()
 
-    bus.write_i2c_block_data(address, reg_write_dac, mode_h)
+    #bus.write_i2c_block_data(ADDRESS, REG_WRITE, [int(mode_h)])
     n += 1
