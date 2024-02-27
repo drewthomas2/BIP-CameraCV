@@ -14,8 +14,9 @@ address = 0x60 # change
 reg_write_dac = 0x40
 bus = smbus.SMBus(1))
 
-n=0
-while n<2:
+n = 0 # count
+p = 1 # times run
+while n<1:
     picam = Picamera2()
     rawCapture = PiRGBArray(picam)
 
