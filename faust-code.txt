@@ -1,0 +1,26 @@
+import("stdfaust.lib");
+freq = hslider("pitch", 277, 50, 660, 1) : si.smoo;
+//freq = 277;
+
+// freq2 = hslider("pitch2", 415.5, 50, 660, 1) : si.smoo;
+freq2 = freq*1.5;
+freq2_2 = freq2+1;
+
+//freq3 = hslider("pitch3", 369.333, 50, 660, 1) : si.smoo;
+freq3 = freq*1.33333;
+freq3_2 = freq3+1;
+
+gain1 = hslider("gain1",0.2,0,1,0.1) : si.smoo;
+//gain1 = -0.05;
+freq_1 = freq+1;
+hue = hslider("hue",90,0,180,1) : si.smoo;
+ctfreq = (hue * 20) + 50;
+x = (hue%2)+0.25;
+lfo = (os.lf_trianglepos(x));
+q = 4 : si.smoo;
+// gain2 = hslider("gain2",0.5,0,1,0.1) : si.smoo;
+//gain2 = -0.01;
+ctgain = hslider("filt gain",0.4,0,1,0.1) : si.smoo;
+//ctgain = 1;
+process = lfo*os.osc(freq)*gain1, lfo*os.osc(freq2)*gain1, lfo*os.osc(freq3)*gain1, no.pink_noise :> fi.resonlp(ctfreq,q,ctgain);
+// process = os.osc(freq)*gain1*os.sawtooth(freq_1)*gain2*no.pink_noise;
